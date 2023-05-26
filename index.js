@@ -1,28 +1,28 @@
 document.getElementById("myForm").addEventListener("submit", function (event) {
   event.preventDefault();
   clearErrors();
-  var formData = validateForm();
-
+  let formData = validateForm();
   if (formData) {
+    document.getElementById("myForm").style.display = "none";
     displayFormData(formData);
   }
 });
 
 function validateForm() {
-  var firstName = document.getElementById("firstName").value.trim();
-  var middleName = document.getElementById("middleName").value.trim();
-  var lastName = document.getElementById("lastName").value.trim();
-  var email = document.getElementById("email").value.trim();
-  var contactNumber = document.getElementById("contactNumber").value.trim();
-  var password = document.getElementById("password").value.trim();
-  var confirmPassword = document.getElementById("confirmPassword").value.trim();
-  var streetUnit = document.getElementById("streetUnit").value.trim();
-  var barangay = document.getElementById("barangay").value.trim();
-  var city = document.getElementById("city").value.trim();
-  var province = document.getElementById("province").value.trim();
-  var zipCode = document.getElementById("zipCode").value.trim();
+  let firstName = document.getElementById("firstName").value.trim();
+  let middleName = document.getElementById("middleName").value.trim();
+  let lastName = document.getElementById("lastName").value.trim();
+  let email = document.getElementById("email").value.trim();
+  let contactNumber = document.getElementById("contactNumber").value.trim();
+  let password = document.getElementById("password").value.trim();
+  let confirmPassword = document.getElementById("confirmPassword").value.trim();
+  let streetUnit = document.getElementById("streetUnit").value.trim();
+  let barangay = document.getElementById("barangay").value.trim();
+  let city = document.getElementById("city").value.trim();
+  let province = document.getElementById("province").value.trim();
+  let zipCode = document.getElementById("zipCode").value.trim();
 
-  var errorFields = [];
+  let errorFields = [];
 
   if (firstName === "") {
     errorFields.push("firstName");
@@ -112,17 +112,17 @@ function validateForm() {
 }
 
 function isValidEmail(email) {
-  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
 
 function isValidContactNumber(contactNumber) {
-  var contactNumberRegex = /^\d{1,10}$/;
+  let contactNumberRegex = /^\d{1,10}$/;
   return contactNumberRegex.test(contactNumber);
 }
 
 function isValidPassword(password) {
-  var passwordRegex =
+  let passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{8,}$/;
   return passwordRegex.test(password);
 }
@@ -139,21 +139,39 @@ function applyErrorStyles(fields) {
 }
 
 function clearErrors() {
-  var errorFields = document.querySelectorAll(".error");
+  let errorFields = document.querySelectorAll(".error");
   errorFields.forEach(function (field) {
     field.classList.remove("error");
   });
 
-  var errorMessages = document.querySelectorAll(".text-danger");
+  let errorMessages = document.querySelectorAll(".text-danger");
   errorMessages.forEach(function (message) {
     message.textContent = "";
   });
 }
 
 function displayFormData(formData) {
-  var formContainer = document.querySelector(".container");
-  var outputDiv = document.createElement("div");
-  outputDiv.innerHTML =
-    "<h2>Form Data:</h2><pre>" + formData.join("\n") + "</pre>";
-  formContainer.appendChild(outputDiv);
+  let formDataContainer = document.getElementById("formDataContainer");
+  formDataContainer.style.display = "block";
+  let outputHtml = "<h2>Form Data:</h2>";
+  let fieldLabels = {
+    firstName: "First Name",
+    middleName: "Middle Name",
+    lastName: "Last Name",
+    email: "Email",
+    contactNumber: "Contact Number",
+    password: "Password",
+    streetUnit: "Street/Unit",
+    barangay: "Barangay",
+    city: "City/Town",
+    province: "Province",
+    zipCode: "Zip Code",
+  };
+  for (let i = 0; i < formData.length; i++) {
+    let label = fieldLabels[Object.keys(fieldLabels)[i]];
+    let value = formData[i];
+    outputHtml += "<p><strong>" + label + ": </strong>" + value + "</p>";
+  }
+
+  formDataContainer.innerHTML = outputHtml;
 }
